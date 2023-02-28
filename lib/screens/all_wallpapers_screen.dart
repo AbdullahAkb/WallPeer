@@ -133,10 +133,7 @@ class _AllWallpapersScreenState extends State<AllWallpapersScreen> {
                                     InkWell(
                                       onTap: () {
                                         Get.to(PreviewScreen(
-                                          title: snapshot
-                                              .data![index].src.portrait,
-                                          original: snapshot
-                                              .data![index].src.original,
+                                          details: snapshot.data![index],
                                         ));
                                       },
                                       child: Container(
