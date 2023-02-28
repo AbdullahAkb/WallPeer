@@ -9,6 +9,7 @@ import 'package:wallpeer/models/photo_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:wallpeer/screens/main_screen.dart';
 import 'package:wallpeer/screens/preview_screen.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class AllWallpapersScreen extends StatefulWidget {
   final String title;
@@ -18,14 +19,37 @@ class AllWallpapersScreen extends StatefulWidget {
   State<AllWallpapersScreen> createState() => _AllWallpapersScreenState();
 }
 
-class _AllWallpapersScreenState extends State<AllWallpapersScreen> {
+class _AllWallpapersScreenState extends State<AllWallpapersScreen>
+    with TickerProviderStateMixin {
   TextEditingController searchController = TextEditingController();
+  late AnimationController _controller;
+
   ScrollController scrollController = ScrollController();
   String apiKey = "zMK7BWyZmjj8O3fNg2AtgCIxZAPQRtM0sR4RtIxH6zZJzSetWjvO1LCu";
   List<PhotoModel> photoList = [];
   String nextpage = "";
   int page = 1;
   bool isSearching = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Create a new animation controller with a duration of 1 second
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 1),
+    );
+
+    // Forward the animation
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   Stream<List<PhotoModel>> getWallpapers() async* {
     Uri apiUrl = Uri.parse(
@@ -114,73 +138,92 @@ class _AllWallpapersScreenState extends State<AllWallpapersScreen> {
                             ],
                           );
                         } else if (snapshot.hasData) {
-                          return GridView.builder(
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    childAspectRatio: 100,
-                                    crossAxisCount: 2,
-                                    crossAxisSpacing: 10,
-                                    // mainAxisSpacing: 10,
-                                    mainAxisExtent: 300),
-                            controller: scrollController,
-                            physics: ScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                child: Column(
-                                  children: [
-                                    InkWell(
-                                      onTap: () {
-                                        Get.to(PreviewScreen(
-                                          details: snapshot.data![index],
-                                        ));
-                                      },
+                          return AnimationLimiter(
+                            child: GridView.builder(
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      childAspectRatio: 100,
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 10,
+                                      // mainAxisSpacing: 10,
+                                      mainAxisExtent: 300),
+                              controller: scrollController,
+                              physics: ScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, index) {
+                                return AnimationConfiguration.staggeredGrid(
+                                  position: index,
+                                  duration: const Duration(milliseconds: 500),
+                                  columnCount: 2,
+                                  child: FadeInAnimation(
+                                    child: SlideAnimation(
                                       child: Container(
-                                        decoration: BoxDecoration(
-                                            boxShadow: [
-                                              BoxShadow(
-                                                  color: Color.fromARGB(
-                                                      255, 208, 208, 208),
-                                                  offset: Offset(0, 3),
-                                                  spreadRadius: 2,
-                                                  blurRadius: 3)
-                                            ],
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(22))),
-                                        width: width,
-                                        // height: height * 0.,
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(7)),
-                                          child: Image.network(
-                                            fit: BoxFit.cover,
-                                            snapshot.data![index].src.portrait,
-                                            // fit: BoxFit.contain,
-                                          ),
+                                        child: Column(
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                Get.to(PreviewScreen(
+                                                  details:
+                                                      snapshot.data![index],
+                                                ));
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              208,
+                                                              208,
+                                                              208),
+                                                          offset: Offset(0, 3),
+                                                          spreadRadius: 2,
+                                                          blurRadius: 3)
+                                                    ],
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                22))),
+                                                width: width,
+                                                // height: height * 0.,
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(7)),
+                                                  child: Image.network(
+                                                    fit: BoxFit.cover,
+                                                    snapshot.data![index].src
+                                                        .portrait,
+                                                    // fit: BoxFit.contain,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Divider(
+                                              color: Color(0xFF237A57),
+                                              indent: 20,
+                                              endIndent: 20,
+                                            ),
+                                            Container(
+                                              width: width * 0.4,
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                style: TextStyle(
+                                                    fontFamily: "Josefin Sans"),
+                                                snapshot.data![index].alt,
+                                                softWrap: false,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            )
+                                          ],
                                         ),
                                       ),
                                     ),
-                                    Divider(
-                                      color: Color(0xFF237A57),
-                                      indent: 20,
-                                      endIndent: 20,
-                                    ),
-                                    Container(
-                                      width: width * 0.4,
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        style: TextStyle(
-                                            fontFamily: "Josefin Sans"),
-                                        snapshot.data![index].alt,
-                                        softWrap: false,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              );
-                            },
+                                  ),
+                                );
+                              },
+                            ),
                           );
                         }
                         return Column(
