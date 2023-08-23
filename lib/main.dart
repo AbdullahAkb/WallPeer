@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:wallpeer/home_screen/home_screen.dart';
-import 'package:wallpeer/screens/trending_screen.dart';
-import 'package:wallpeer/screens/main_screen.dart';
-import 'package:wallpeer/screens/all_wallpapers_screen.dart';
 import 'package:wallpeer/utils/images.dart';
-import 'package:wallpeer/widgets/category_box.dart';
+
 
 void main() {
   runApp(const MyApp());

@@ -39,7 +39,7 @@ class _CategoriesScreensState extends State<CategoriesScreens>
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 238, 238, 238),
         body: SingleChildScrollView(

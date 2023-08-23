@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:wallpeer/models/photo_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:wallpeer/screens/main_screen.dart';
 import 'package:wallpeer/screens/preview_screen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 

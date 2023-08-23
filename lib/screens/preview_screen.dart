@@ -26,14 +26,14 @@ class _PreviewScreenState extends State<PreviewScreen> {
   }
 
   Future<void> downloadFile(String url, String filename) async {
-    var taskId = await FlutterDownloader.enqueue(
+    // var taskId = await FlutterDownloader.enqueue(
       
-      url: url,
-      savedDir: '/storage/emulated/0/Download/',
-      fileName: filename,
-      showNotification: true,
-      openFileFromNotification: true,
-    );
+    //   url: url,
+    //   savedDir: '/storage/emulated/0/Download/',
+    //   fileName: filename,
+    //   showNotification: true,
+    //   openFileFromNotification: true,
+    // );
   }
 
   @override
