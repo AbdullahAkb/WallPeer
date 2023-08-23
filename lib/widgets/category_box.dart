@@ -1,17 +1,17 @@
-import 'dart:ui';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CategoryBox extends StatefulWidget {
-  final String title;
-  final String url;
-  final VoidCallback onpressed;
   const CategoryBox(
       {Key? key,
       required this.title,
       required this.url,
       required this.onpressed})
       : super(key: key);
+
+  final VoidCallback onpressed;
+  final String title;
+  final String url;
 
   @override
   State<CategoryBox> createState() => _CategoryBoxState();
@@ -39,7 +39,7 @@ class _CategoryBoxState extends State<CategoryBox> {
                     blurRadius: 3)
               ],
               image: DecorationImage(
-                image: NetworkImage(widget.url),
+                image: CachedNetworkImageProvider(widget.url),
                 fit: BoxFit.cover,
               ),
               // color: Colors.grey,

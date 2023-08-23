@@ -118,7 +118,7 @@ class _MainScreenState extends State<MainScreen> {
             bottom: TabBar(
                 labelColor: Colors.white,
                 unselectedLabelColor: Colors.grey,
-                indicatorColor: Colors.orange,
+                indicatorColor: Color(0xFFFF9800),
                 splashBorderRadius: BorderRadius.circular(40),
                 splashFactory: NoSplash.splashFactory,
                 tabs: [
@@ -149,7 +149,7 @@ class _MainScreenState extends State<MainScreen> {
                       },
                       icon: Icon(
                         CupertinoIcons.clear,
-                        color: Colors.orange,
+                        color: Color(0xFFFF9800),
                       ))
                   : IconButton(
                       onPressed: () {

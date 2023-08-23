@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:get/get.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:wallpeer/models/photo_model.dart';
+import 'package:wallpeer/screens/preview_screen.dart';
 
 class TrendingScreen extends StatefulWidget {
   const TrendingScreen({Key? key}) : super(key: key);
@@ -142,28 +144,36 @@ class _TrendingScreenState extends State<TrendingScreen>
                                     child: Container(
                                       child: Column(
                                         children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                      color: Color.fromARGB(
-                                                          255, 208, 208, 208),
-                                                      offset: Offset(0, 3),
-                                                      spreadRadius: 2,
-                                                      blurRadius: 3)
-                                                ],
+                                          GestureDetector(
+                                            onTap: () {
+                                              Get.to(PreviewScreen(
+                                                  details:
+                                                      snapshot.data![index]));
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                        color: Color.fromARGB(
+                                                            255, 208, 208, 208),
+                                                        offset: Offset(0, 3),
+                                                        spreadRadius: 2,
+                                                        blurRadius: 3)
+                                                  ],
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(22))),
+                                              width: width,
+                                              // height: height * 0.,
+                                              child: ClipRRect(
                                                 borderRadius: BorderRadius.all(
-                                                    Radius.circular(22))),
-                                            width: width,
-                                            // height: height * 0.,
-                                            child: ClipRRect(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(7)),
-                                              child: Image.network(
-                                                fit: BoxFit.cover,
-                                                snapshot
-                                                    .data![index].src.portrait,
-                                                // fit: BoxFit.contain,
+                                                    Radius.circular(7)),
+                                                child: Image.network(
+                                                  fit: BoxFit.cover,
+                                                  snapshot.data![index].src
+                                                      .portrait,
+                                                  // fit: BoxFit.contain,
+                                                ),
                                               ),
                                             ),
                                           ),

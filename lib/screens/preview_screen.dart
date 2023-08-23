@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:wallpeer/models/photo_model.dart';
+import 'package:parallax_sensors_bg/parallax_sensors_bg.dart';
 
 class PreviewScreen extends StatefulWidget {
   final PhotoModel details;
@@ -26,8 +27,9 @@ class _PreviewScreenState extends State<PreviewScreen> {
 
   Future<void> downloadFile(String url, String filename) async {
     var taskId = await FlutterDownloader.enqueue(
+      
       url: url,
-      savedDir: '/sdcard/Download',
+      savedDir: '/storage/emulated/0/Download/',
       fileName: filename,
       showNotification: true,
       openFileFromNotification: true,
@@ -38,7 +40,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarIconBrightness: Brightness.light,
       statusBarColor: Color.fromARGB(255, 0, 0, 0), // status bar color
     ));
@@ -51,25 +53,55 @@ class _PreviewScreenState extends State<PreviewScreen> {
       // ),
       body: SafeArea(
         child: Stack(children: [
-          Container(
-            width: width,
-            height: height,
-            child: Image.network(
-              widget.details.src.portrait,
-              fit: BoxFit.cover,
-            ),
+          // Container(
+          //   width: width,
+          //   height: height,
+          //   child: Image.network(
+          //     widget.details.src.portrait,
+          //     fit: BoxFit.cover,
+          //   ),
+          // ),
+          Parallax(
+            sensor: ParallaxSensor.gyroscope,
+            layers: [
+              Layer(
+                preventCrop: false,
+                sensitivity: 13,
+                image: NetworkImage(widget.details.src.portrait),
+                imageHeight: height,
+                imageFit: BoxFit.fitHeight,
+                // imageFit: BoxFit.fitHeight,
+              ),
+              Layer(
+                // imageWidth: width,
+                preventCrop: true,
+                sensitivity: 13,
+                image: NetworkImage(
+                  widget.details.src.portrait,
+                ),
+                imageFit: BoxFit.fitHeight,
+                imageHeight: height,
+                // imageFit: BoxFit.fitHeight,
+              ),
+              // Layer(
+              //   sensitivity: 12,
+              //   child: Text('Topmost layer'),
+              // ),
+            ],
+            // child: Text('Page body here'),
           ),
           Container(
             height: height * 0.09,
             // margin: EdgeInsets.only(top: height * 0.03),
-            decoration: BoxDecoration(color: Color.fromARGB(50, 158, 158, 158)),
+            decoration:
+                const BoxDecoration(color: Color.fromARGB(50, 158, 158, 158)),
             child: Row(
               children: [
                 IconButton(
                     onPressed: () {
                       Get.back();
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.arrow_back_ios_new_rounded,
                       color: Colors.orange,
                       size: 20,
@@ -77,7 +109,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                 SizedBox(
                   width: width * 0.1,
                 ),
-                Text(
+                const Text(
                   "Preview",
                   style: TextStyle(
                       fontFamily: "Josefin Sans",
@@ -91,7 +123,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                       downloadFile(
                           widget.details.src.original, widget.details.alt);
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       CupertinoIcons.cloud_download,
                       color: Colors.orange,
                       size: 20,
@@ -108,15 +140,15 @@ class _PreviewScreenState extends State<PreviewScreen> {
                             return AlertDialog(
                                 elevation: 1,
                                 shadowColor: Colors.white,
-                                backgroundColor: Color(0x4E9E9E9E),
-                                title: Text(
+                                backgroundColor: const Color(0x4E9E9E9E),
+                                title: const Text(
                                   "Details",
                                   style: TextStyle(
                                       fontFamily: "Josefin Sans",
                                       color: Colors.white),
                                 ),
                                 content: Container(
-                                  decoration: BoxDecoration(),
+                                  decoration: const BoxDecoration(),
                                   height: height * 0.235,
                                   child: Column(
                                     children: [
@@ -128,7 +160,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
                                         children: [
-                                          Text(
+                                          const Text(
                                             "Photographer :",
                                             style: TextStyle(
                                               fontSize: 16,
@@ -138,7 +170,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                           ),
                                           Text(
                                             widget.details.photographer,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 16,
                                               fontFamily: "Josefin Sans",
@@ -159,7 +191,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
                                         children: [
-                                          Text(
+                                          const Text(
                                             "Height :",
                                             style: TextStyle(
                                               fontSize: 16,
@@ -169,7 +201,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                           ),
                                           Text(
                                             widget.details.height.toString(),
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 16,
                                               fontFamily: "Josefin Sans",
@@ -188,7 +220,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
                                         children: [
-                                          Text(
+                                          const Text(
                                             "Width :",
                                             style: TextStyle(
                                               fontSize: 16,
@@ -198,7 +230,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                           ),
                                           Text(
                                             widget.details.width.toString(),
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 16,
                                               fontFamily: "Josefin Sans",
@@ -218,14 +250,14 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                 ));
                           });
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       CupertinoIcons.info,
                       color: Colors.orange,
                       size: 20,
                     )),
               ],
             ),
-          )
+          ),
         ]),
       ),
     );
